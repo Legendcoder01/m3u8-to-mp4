@@ -21,26 +21,43 @@ const points = [
   },
 ];
 
+const comparisonRows = [
+  { feature: "Type", m3u8: "Playlist / Manifest", mp4: "Container File" },
+  { feature: "Internet Required", m3u8: "Yes (Streaming)", mp4: "No (Offline)" },
+  { feature: "Compatibility", m3u8: "Browsers / HLS Players", mp4: "Almost All Devices" },
+  { feature: "File Structure", m3u8: "Segmented (variable)", mp4: "Single File" },
+  { feature: "Editing Support", m3u8: "Limited", mp4: "Universal" },
+];
+
 export default function WhatIsM3U8Section() {
   return (
     <section className="w-full py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Illustration placeholder */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-8 flex items-center justify-center min-h-[320px]">
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 mx-auto rounded-full bg-blue-500/20 flex items-center justify-center">
-                <FileVideo className="w-10 h-10 text-blue-400" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-2xl font-bold text-gray-100">M3U8</p>
-                <p className="text-gray-400 text-sm">HLS Streaming Protocol</p>
-              </div>
-              <div className="flex items-center justify-center gap-3 text-gray-500 text-xs">
-                <span className="px-2 py-1 bg-white/5 rounded">HLS Support</span>
-                <span className="px-2 py-1 bg-white/5 rounded">Adaptive Bitrate</span>
-                <span className="px-2 py-1 bg-white/5 rounded">Cross Platform</span>
-              </div>
+          {/* Left: M3U8 vs MP4 Comparison Table */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-white/10">
+              <h3 className="text-lg font-semibold text-gray-100">M3U8 vs MP4 Comparison</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feature</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-400 uppercase tracking-wider">M3U8 (HLS)</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-emerald-400 uppercase tracking-wider">MP4</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {comparisonRows.map((row) => (
+                    <tr key={row.feature} className="hover:bg-white/[0.02] transition-colors">
+                      <td className="px-6 py-3.5 text-gray-300 font-medium">{row.feature}</td>
+                      <td className="px-6 py-3.5 text-gray-400">{row.m3u8}</td>
+                      <td className="px-6 py-3.5 text-gray-400">{row.mp4}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -51,8 +68,10 @@ export default function WhatIsM3U8Section() {
             </h2>
             <p className="text-gray-400 leading-relaxed">
               M3U8 is an HTTP-based streaming protocol widely used for live
-              streaming and video-on-demand transmission. Our converter transforms
-              these streams into universally playable MP4 files.
+              streaming and video-on-demand transmission. Unlike MP4 which is a
+              self-contained video file, M3U8 is a playlist that points to small
+              video segments delivered over the internet. Our converter reassembles
+              these segments into a single, universally playable MP4 file.
             </p>
 
             <div className="space-y-6 mt-8">

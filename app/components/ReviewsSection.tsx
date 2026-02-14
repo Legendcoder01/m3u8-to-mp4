@@ -2,28 +2,28 @@ import { Star } from "lucide-react";
 
 const reviews = [
   {
-    name: "David Rodriguez",
-    role: "Network Engineer",
+    name: "Marcus J.",
+    role: "College Student",
     rating: 5,
-    text: "Essential tool for converting HLS streams. Handles multiple formats with ease and the quality of the MP4 output is excellent.",
+    text: "My university streams recorded lectures in HLS format with no download option. This tool let me convert them to MP4 so I can study offline during my commute. Absolute lifesaver during finals.",
   },
   {
-    name: "Emma Wilson",
-    role: "Content Creator",
+    name: "Priya S.",
+    role: "Freelance Journalist",
     rating: 5,
-    text: "Perfect for downloading course videos. I can convert M3U8 streams to MP4 and watch them offline without any hassle.",
+    text: "I cover live press conferences that are only available via HLS streams. Being able to quickly convert them to MP4 means I can clip quotes and edit packages in Premiere without missing deadlines.",
   },
   {
-    name: "Alex Thompson",
-    role: "Product Manager",
-    rating: 5,
-    text: "Clean and elegant interface with fast conversions. Our entire team uses this tool for converting and archiving video streams.",
+    name: "Tom K.",
+    role: "Freelance Video Editor",
+    rating: 4,
+    text: "A client sent me an M3U8 link instead of a proper video file. I had no idea what to do with it until I found this tool. Converted it to MP4 in minutes and imported it straight into DaVinci Resolve.",
   },
   {
-    name: "Sarah Chen",
-    role: "Video Editor",
+    name: "Dr. Lena F.",
+    role: "Academic Researcher",
     rating: 5,
-    text: "Ideal for grabbing streaming content and converting to MP4 for editing. The conversion speed is impressive and quality stays intact.",
+    text: "I archive publicly available webinar recordings for my research. Many academic platforms use HLS streaming with no download button. This converter is the cleanest solution I have found.",
   },
 ];
 

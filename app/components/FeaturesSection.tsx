@@ -36,7 +36,7 @@ const features = [
     icon: Shield,
     title: "Secure & Private",
     description:
-      "All conversions are processed securely. Your data and URLs are never stored or shared with third parties.",
+      "All conversions are processed securely on our servers using FFmpeg. Your URLs and converted files are automatically deleted after download -- nothing is stored or shared.",
   },
   {
     icon: Download,

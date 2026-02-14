@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 const steps = [
   {
     number: 1,
     title: "Get M3U8 Link",
     description:
-      "Obtain the M3U8 format link from video websites or streaming sources.",
+      "find-m3u8-guide",
   },
   {
     number: 2,
@@ -55,7 +57,17 @@ export default function HowToUseSection() {
                 {step.title}
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                {step.description}
+                {step.description === "find-m3u8-guide" ? (
+                  <>
+                    {"Find the M3U8 stream URL using your browser's Developer Tools (Network tab). "}
+                    <Link href="/blog/how-to-find-m3u8-link" className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors">
+                      Not sure how? Read our guide
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  step.description
+                )}
               </p>
             </div>
           ))}

@@ -8,6 +8,7 @@ const footerLinks = {
   Resources: [
     { label: "How to Use", href: "#how-to-use" },
     { label: "What is M3U8", href: "#what-is-m3u8" },
+    { label: "How to Find M3U8 Links", href: "/blog/how-to-find-m3u8-link" },
   ],
   "Recommended Tools": [
     { label: "VLC Player", href: "https://www.videolan.org/vlc/" },

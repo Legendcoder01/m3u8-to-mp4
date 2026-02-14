@@ -3,6 +3,7 @@ import ConverterForm from "./components/ConverterForm";
 import StatsSection from "./components/StatsSection";
 import FeaturesSection from "./components/FeaturesSection";
 import WhatIsM3U8Section from "./components/WhatIsM3U8Section";
+import UseCasesSection from "./components/UseCasesSection";
 import HowToUseSection from "./components/HowToUseSection";
 import WhyChooseSection from "./components/WhyChooseSection";
 import FAQSection from "./components/FAQSection";
@@ -54,6 +55,12 @@ export default function Home() {
       <div id="what-is-m3u8">
         <WhatIsM3U8Section />
       </div>
+
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="h-px bg-white/5" />
+      </div>
+
+      <UseCasesSection />
 
       <div className="max-w-6xl mx-auto px-4">
         <div className="h-px bg-white/5" />

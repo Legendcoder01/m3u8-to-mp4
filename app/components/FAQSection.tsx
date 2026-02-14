@@ -29,6 +29,16 @@ const faqs = [
     answer:
       "Absolutely. We do not store your URLs or converted files permanently. All data is processed in real-time and automatically cleaned up after your download completes. Your privacy is our priority.",
   },
+  {
+    question: "Can I convert DRM-protected streams?",
+    answer:
+      "No. Streams from services like Netflix, Hulu, or YouTube are encrypted with DRM (Digital Rights Management) and cannot be converted by any legitimate tool. Our converter only works with publicly accessible, non-DRM M3U8 streams.",
+  },
+  {
+    question: "What engine does this converter use?",
+    answer:
+      "Our converter is powered by FFmpeg, the industry-standard open-source multimedia framework trusted by professionals worldwide. It runs on our servers to handle the heavy processing, so you don't need to install anything locally.",
+  },
 ];
 
 export default function FAQSection() {
