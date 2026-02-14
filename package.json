@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint"
   },
   "dependencies": {
+    "@eslint/eslintrc": "^3.3.3",
     "@types/fluent-ffmpeg": "^2.1.28",
     "@types/uuid": "^9.0.8",
     "ffmpeg-static": "^5.2.0",

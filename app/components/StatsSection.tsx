@@ -1,5 +1,3 @@
-"use client";
-
 import { Users, FileVideo, Zap } from "lucide-react";
 
 const stats = [
