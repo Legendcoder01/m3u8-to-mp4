@@ -4,6 +4,8 @@ import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
+export const runtime = "edge";
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const siteUrl = "https://m3u8-to-mp4.farhanabhatt.com";
 

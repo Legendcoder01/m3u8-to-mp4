@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import '../globals.css';
 
+export const runtime = "edge";
+
 export const metadata: Metadata = {
   title: 'Blog - M3U8 to MP4 Converter',
   description: 'Guides and tutorials for M3U8 and HLS conversion.',
