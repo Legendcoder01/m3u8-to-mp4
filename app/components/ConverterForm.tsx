@@ -177,6 +177,23 @@ export default function ConverterForm() {
         setStatus('processing');
     };
 
+    const startBrowserConversion = async () => {
+        const ffmpeg = await loadFFmpeg();
+        setStatus('processing');
+
+        await preparePlaylistForFFmpeg(url, ffmpeg);
+        await ffmpeg.run('-i', 'input.m3u8', '-c', 'copy', 'output.mp4');
+
+        const outputData = ffmpeg.FS('readFile', 'output.mp4');
+        const mp4Blob = new Blob([outputData.buffer], { type: 'video/mp4' });
+        const localUrl = URL.createObjectURL(mp4Blob);
+
+        setLocalDownloadUrl(localUrl);
+        setDownloadName(`converted-${Date.now()}.mp4`);
+        setProgress(100);
+        setStatus('completed');
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!url) return;
@@ -188,28 +205,22 @@ export default function ConverterForm() {
         setProgress(0);
 
         try {
+            // Server-first for speed (native ffmpeg is much faster than wasm for small files)
+            await startServerConversion();
+            return;
+        } catch (serverError) {
             if (!browserFfmpegSupported) {
-                await startServerConversion();
+                setStatus('error');
+                setError(serverError instanceof Error ? serverError.message : 'Conversion failed.');
                 return;
             }
+        }
 
-            const ffmpeg = await loadFFmpeg();
-            setStatus('processing');
-
-            await preparePlaylistForFFmpeg(url, ffmpeg);
-            await ffmpeg.run('-i', 'input.m3u8', '-c', 'copy', 'output.mp4');
-
-            const outputData = ffmpeg.FS('readFile', 'output.mp4');
-            const mp4Blob = new Blob([outputData.buffer], { type: 'video/mp4' });
-            const localUrl = URL.createObjectURL(mp4Blob);
-
-            setLocalDownloadUrl(localUrl);
-            setDownloadName(`converted-${Date.now()}.mp4`);
-            setProgress(100);
-            setStatus('completed');
-        } catch (err) {
+        try {
+            await startBrowserConversion();
+        } catch (browserError) {
             setStatus('error');
-            setError(err instanceof Error ? err.message : 'Conversion failed.');
+            setError(browserError instanceof Error ? browserError.message : 'Conversion failed.');
         }
     };
 
@@ -259,7 +270,7 @@ export default function ConverterForm() {
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
                     </span>
                     <span className="text-xs text-emerald-400 font-medium">
-                        {browserFfmpegSupported ? 'Browser-side FFmpeg ready' : 'Using server conversion fallback'}
+                        Server-first conversion (fast) with browser fallback
                     </span>
                 </div>
             </div>
