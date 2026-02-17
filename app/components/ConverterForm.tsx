@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Loader2, Download, AlertCircle, FileVideo, CheckCircle, ChevronDown, ChevronUp, HelpCircle, Shield } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -71,19 +71,22 @@ async function loadFfmpegScript() {
 export default function ConverterForm() {
     const t = useTranslations('ConverterForm');
     const [url, setUrl] = useState('');
+    const [jobId, setJobId] = useState<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'pending' | 'processing' | 'completed' | 'error'>('idle');
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
     const [showGuide, setShowGuide] = useState(false);
-    const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+    const [localDownloadUrl, setLocalDownloadUrl] = useState<string | null>(null);
     const [downloadName, setDownloadName] = useState('converted.mp4');
 
     const ffmpegRef = useRef<ReturnType<NonNullable<Window['FFmpeg']>['createFFmpeg']> | null>(null);
 
+    const browserFfmpegSupported = typeof SharedArrayBuffer !== 'undefined';
+
     const cleanupDownload = () => {
-        if (downloadUrl) {
-            URL.revokeObjectURL(downloadUrl);
-            setDownloadUrl(null);
+        if (localDownloadUrl) {
+            URL.revokeObjectURL(localDownloadUrl);
+            setLocalDownloadUrl(null);
         }
     };
 
@@ -161,16 +164,35 @@ export default function ConverterForm() {
         ffmpeg.FS('writeFile', 'input.m3u8', new TextEncoder().encode(rewrittenPlaylist));
     };
 
+    const startServerConversion = async () => {
+        const res = await fetch('/api/convert', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url }),
+        });
+
+        if (!res.ok) throw new Error('Failed to start server conversion');
+        const data = await res.json();
+        setJobId(data.id);
+        setStatus('processing');
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!url) return;
 
         cleanupDownload();
+        setJobId(null);
         setStatus('pending');
         setError(null);
         setProgress(0);
 
         try {
+            if (!browserFfmpegSupported) {
+                await startServerConversion();
+                return;
+            }
+
             const ffmpeg = await loadFFmpeg();
             setStatus('processing');
 
@@ -181,7 +203,7 @@ export default function ConverterForm() {
             const mp4Blob = new Blob([outputData.buffer], { type: 'video/mp4' });
             const localUrl = URL.createObjectURL(mp4Blob);
 
-            setDownloadUrl(localUrl);
+            setLocalDownloadUrl(localUrl);
             setDownloadName(`converted-${Date.now()}.mp4`);
             setProgress(100);
             setStatus('completed');
@@ -190,6 +212,39 @@ export default function ConverterForm() {
             setError(err instanceof Error ? err.message : 'Conversion failed.');
         }
     };
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (jobId && status === 'processing') {
+            interval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/api/status/${jobId}`);
+                    if (!res.ok) return;
+
+                    const data = await res.json();
+                    if (data.status === 'completed') {
+                        setStatus('completed');
+                        setProgress(100);
+                        clearInterval(interval);
+                    } else if (data.status === 'error') {
+                        setStatus('error');
+                        setError(data.error || 'Conversion failed');
+                        clearInterval(interval);
+                    } else {
+                        setStatus(data.status);
+                        setProgress(data.progress || 0);
+                    }
+                } catch {
+                    // no-op
+                }
+            }, 1000);
+        }
+
+        return () => clearInterval(interval);
+    }, [jobId, status]);
+
+    const downloadUrl = localDownloadUrl || (jobId ? `/api/download/${jobId}` : null);
 
     return (
         <div className="w-full max-w-2xl mx-auto p-6 space-y-8 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl shadow-xl">
@@ -203,7 +258,9 @@ export default function ConverterForm() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
                     </span>
-                    <span className="text-xs text-emerald-400 font-medium">Browser-side FFmpeg ready</span>
+                    <span className="text-xs text-emerald-400 font-medium">
+                        {browserFfmpegSupported ? 'Browser-side FFmpeg ready' : 'Using server conversion fallback'}
+                    </span>
                 </div>
             </div>
 
@@ -241,10 +298,7 @@ export default function ConverterForm() {
                             <li>{t('step3')}</li>
                             <li>{t('step4')}</li>
                         </ol>
-                        <Link
-                            href="/blog/how-to-find-m3u8-link"
-                            className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                        >
+                        <Link href="/blog/how-to-find-m3u8-link" className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition-colors">
                             {t('fullGuide')}
                             <span aria-hidden="true">&rarr;</span>
                         </Link>
@@ -291,20 +345,12 @@ export default function ConverterForm() {
             </form>
 
             {status !== 'idle' && (
-                <div className={`p-6 rounded-xl border ${status === 'completed' ? 'bg-green-500/10 border-green-500/20' :
-                    status === 'error' ? 'bg-red-500/10 border-red-500/20' :
-                        'bg-blue-500/10 border-blue-500/20'
-                    } transition-all duration-500`}>
-
+                <div className={`p-6 rounded-xl border ${status === 'completed' ? 'bg-green-500/10 border-green-500/20' : status === 'error' ? 'bg-red-500/10 border-red-500/20' : 'bg-blue-500/10 border-blue-500/20'} transition-all duration-500`}>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                            {status === 'completed' ? <CheckCircle className="text-green-500 w-6 h-6" /> :
-                                status === 'error' ? <AlertCircle className="text-red-500 w-6 h-6" /> :
-                                    <Loader2 className="text-blue-500 w-6 h-6 animate-spin" />}
+                            {status === 'completed' ? <CheckCircle className="text-green-500 w-6 h-6" /> : status === 'error' ? <AlertCircle className="text-red-500 w-6 h-6" /> : <Loader2 className="text-blue-500 w-6 h-6 animate-spin" />}
                             <span className="font-medium text-gray-200 capitalize">
-                                {status === 'completed' ? t('success') :
-                                    status === 'error' ? t('failed') :
-                                        t('processing')}
+                                {status === 'completed' ? t('success') : status === 'error' ? t('failed') : t('processing')}
                             </span>
                         </div>
                         <span className="text-sm font-mono text-gray-400">{progress}%</span>
@@ -312,29 +358,18 @@ export default function ConverterForm() {
 
                     {(status === 'processing' || status === 'pending') && (
                         <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                            <div
-                                className="bg-blue-500 h-full rounded-full transition-all duration-300 ease-out"
-                                style={{ width: `${progress}%` }}
-                            />
+                            <div className="bg-blue-500 h-full rounded-full transition-all duration-300 ease-out" style={{ width: `${progress}%` }} />
                         </div>
                     )}
 
                     {status === 'completed' && downloadUrl && (
-                        <a
-                            href={downloadUrl}
-                            download={downloadName}
-                            className="mt-4 flex items-center justify-center gap-2 w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium"
-                        >
+                        <a href={downloadUrl} download={downloadName} className="mt-4 flex items-center justify-center gap-2 w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium">
                             <Download className="w-5 h-5" />
                             {t('download')}
                         </a>
                     )}
 
-                    {status === 'error' && (
-                        <div className="mt-2 text-red-400 text-sm">
-                            {error}
-                        </div>
-                    )}
+                    {status === 'error' && <div className="mt-2 text-red-400 text-sm">{error}</div>}
                 </div>
             )}
 
