@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { FileVideo, ArrowLeft, Monitor, Globe, Code, AlertTriangle, ArrowRight } from "lucide-react";
+
+export const runtime = "edge";
 
 export const metadata: Metadata = {
   title: "How to Find an M3U8 Link - Step-by-Step Guide | M3U8 to MP4 Converter",
@@ -16,14 +19,17 @@ export const metadata: Metadata = {
     "m3u8 url finder",
     "network tab m3u8",
   ],
+  metadataBase: new URL("https://m3u8-to-mp4.farhanabhatt.com"),
+  alternates: {
+    canonical: "/blog/how-to-find-m3u8-link",
+  },
   openGraph: {
     title: "How to Find an M3U8 Link - Step-by-Step Guide",
     description:
       "Learn how to find M3U8 stream URLs using Chrome DevTools, Firefox, and page source.",
     type: "article",
-  },
-  alternates: {
-    canonical: "/blog/how-to-find-m3u8-link",
+    url: "/blog/how-to-find-m3u8-link",
+    images: [{ url: "/logo.svg", width: 512, height: 512, alt: "M3U8 to MP4 logo" }],
   },
 };
 
@@ -84,7 +90,7 @@ export default function HowToFindM3U8Link() {
             <span className="text-sm">Back to Converter</span>
           </Link>
           <Link href="/" className="flex items-center gap-2">
-            <FileVideo className="w-5 h-5 text-blue-400" />
+            <Image src="/logo.svg" alt="M3U8 to MP4" width={20} height={20} className="rounded-sm" />
             <span className="text-sm font-semibold text-gray-200">M3U8 to MP4</span>
           </Link>
         </div>
