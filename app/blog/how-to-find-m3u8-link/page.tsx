@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { FileVideo, ArrowLeft, Monitor, Globe, Code, AlertTriangle, ArrowRight } from "lucide-react";
 
+export const runtime = "edge";
+
 export const metadata: Metadata = {
   title: "How to Find an M3U8 Link - Step-by-Step Guide | M3U8 to MP4 Converter",
   description:

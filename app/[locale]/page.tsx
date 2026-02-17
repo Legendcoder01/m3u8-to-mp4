@@ -12,6 +12,8 @@ import FooterSection from "../components/FooterSection";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import Image from 'next/image';
 
+export const runtime = "edge";
+
 export default function Home() {
     const t = useTranslations('HomePage');
 
