@@ -1,0 +1,8 @@
+name = "m3u8-to-mp4"
+main = ".vercel/output/static/_worker.js/index.js"
+compatibility_date = "2026-02-17"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".vercel/output/static"
+binding = "ASSETS"
