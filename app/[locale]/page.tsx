@@ -10,6 +10,7 @@ import FAQSection from "../components/FAQSection";
 import ReviewsSection from "../components/ReviewsSection";
 import FooterSection from "../components/FooterSection";
 import LanguageSwitcher from "../components/LanguageSwitcher";
+import Image from 'next/image';
 
 export default function Home() {
     const t = useTranslations('HomePage');
@@ -18,7 +19,11 @@ export default function Home() {
         <div className="min-h-screen bg-[#0f172a] text-gray-100">
             {/* Hero + Converter */}
             <main className="relative overflow-hidden flex flex-col items-center justify-center px-4 pt-20 pb-12">
-                {/* Language Switcher */}
+                {/* Brand + Language Switcher */}
+                <div className="absolute top-6 left-6 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
+                    <Image src="/logo.svg" alt="M3U8 to MP4" width={18} height={18} className="rounded-sm" />
+                    <span className="text-xs font-semibold text-gray-200">M3U8 to MP4</span>
+                </div>
                 <div className="absolute top-6 right-6 z-20">
                     <LanguageSwitcher />
                 </div>

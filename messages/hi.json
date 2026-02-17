@@ -30,6 +30,19 @@
         "failed": "कन्वर्शन विफल रहा",
         "processing": "वीडियो संसाधित किया जा रहा है...",
         "download": "MP4 डाउनलोड करें",
-        "poweredBy": "FFmpeg द्वारा संचालित"
+        "poweredBy": "FFmpeg द्वारा संचालित",
+        "runtimeMode": "सर्वर-फर्स्ट कन्वर्ज़न (तेज़), ब्राउज़र फॉलबैक के साथ"
+    },
+    "Footer": {
+        "aboutTitle": "परिचय",
+        "resourcesTitle": "संसाधन",
+        "toolsTitle": "अनुशंसित टूल्स",
+        "features": "विशेषताएं",
+        "faq": "सामान्य प्रश्न",
+        "howToUse": "कैसे उपयोग करें",
+        "whatIsM3U8": "M3U8 क्या है",
+        "howToFind": "M3U8 लिंक कैसे खोजें",
+        "brandDescription": "HLS स्ट्रीम और ऑन-डिमांड कंटेंट के लिए प्रोफेशनल ऑनलाइन M3U8 से MP4 कन्वर्टर। मुफ्त, तेज़ और भरोसेमंद।",
+        "poweredBy": "Next.js और FFmpeg द्वारा संचालित"
     }
 }

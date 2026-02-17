@@ -30,6 +30,19 @@
         "failed": "Conversion Failed",
         "processing": "Processing Video...",
         "download": "Download MP4",
-        "poweredBy": "Powered by FFmpeg"
+        "poweredBy": "Powered by FFmpeg",
+        "runtimeMode": "Conversion prioritaire côté serveur (rapide) avec secours navigateur"
+    },
+    "Footer": {
+        "aboutTitle": "À propos",
+        "resourcesTitle": "Ressources",
+        "toolsTitle": "Outils recommandés",
+        "features": "Fonctionnalités",
+        "faq": "FAQ",
+        "howToUse": "Comment utiliser",
+        "whatIsM3U8": "Qu'est-ce que M3U8",
+        "howToFind": "Comment trouver des liens M3U8",
+        "brandDescription": "Convertisseur professionnel M3U8 vers MP4 pour flux HLS et contenu à la demande. Gratuit, rapide et fiable.",
+        "poweredBy": "Propulsé par Next.js et FFmpeg"
     }
 }
