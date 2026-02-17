@@ -1,0 +1,35 @@
+{
+    "HomePage": {
+        "title": "Professional Online <span>M3U8 to MP4</span> Converter",
+        "subtitle": "Free online M3U8 stream converter. Convert HLS streams to MP4 files instantly. No download required, fast conversion.",
+        "features": "Features",
+        "howToUse": "How to Use",
+        "whatIsM3U8": "What is M3U8?",
+        "faq": "FAQ"
+    },
+    "ConverterForm": {
+        "header": "M3U8 to MP4 Converter",
+        "subHeader": "Convert streaming videos to MP4 format instantly",
+        "systemStatus": "System Status: Operational",
+        "placeholder": "Enter .m3u8 URL here...",
+        "helpButton": "Need help finding an M3U8 link?",
+        "guideTitle": "Quick 4-step guide:",
+        "step1": "Open the page with the video and press <kbd>F12</kbd> to open DevTools",
+        "step2": "Click the <strong>Network</strong> tab",
+        "step3": "Type <code>m3u8</code> in the filter box, then play the video",
+        "step4": "Right-click the request ending in <code>.m3u8</code> and copy the URL",
+        "fullGuide": "Read the full step-by-step guide",
+        "checklistTitle": "Checklist for success",
+        "linkEndsIn": "Link ends in <code>.m3u8</code>",
+        "publicStream": "Stream is publicly accessible (no login required)",
+        "stableInternet": "Stable internet connection",
+        "drmWarning": "DRM-protected streams (Netflix, YouTube, Hulu) and CORS-restricted URLs cannot be converted.",
+        "convertButton": "Start Conversion",
+        "converting": "Converting...",
+        "success": "Conversion Successful",
+        "failed": "Conversion Failed",
+        "processing": "Processing Video...",
+        "download": "Download MP4",
+        "poweredBy": "Powered by FFmpeg"
+    }
+}
